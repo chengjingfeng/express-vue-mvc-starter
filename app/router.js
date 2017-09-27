@@ -66,12 +66,6 @@ module.exports.init = (app, config) => {
     app.use(compress());
 
     app.use(app.locals.rootPath, express.static(config.root));
-    app.use('/', router);
-
-    let controllers = glob.sync(config.root + '/routes/**/*.js');
-    controllers.forEach(function (controller) {
-        module.require(controller).default(router);
-    });
 
     let sessionConfig = {
         secret: 'CHANGE_ME_TOKEN',
@@ -115,6 +109,13 @@ module.exports.init = (app, config) => {
         next();
     });
 
+    app.use('/', router);
+
+    let controllers = glob.sync(config.root + '/routes/**/*.js');
+    controllers.forEach(function (controller) {
+        module.require(controller).default(router);
+    });
+
     app.use((req, res) => {
         const data = {
             title: 'Error 404'
@@ -130,8 +131,13 @@ module.exports.init = (app, config) => {
 
     app.use(function onError(error, req, res, next) {
         res.statusCode = 500;
+        let data = {
+            debug: env === 'development',
+            errorCode: error.code,
+            error: error.stack
+        };
         if (res.statusCode) {
-            res.renderVue('error', {});
+            res.renderVue('error', data);
         } else {
             next();
         }
