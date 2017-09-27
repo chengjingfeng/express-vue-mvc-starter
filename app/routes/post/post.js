@@ -2,7 +2,8 @@ module.exports.default = (router) => {
     router.get('/post', (req, res) => {
         const data = {
             title: 'Hello World',
-            message: 'GET'
+            message: 'GET',
+            csrfToken: req.csrfToken()
         };
         const vueOptions = {
             head: {

@@ -3,6 +3,7 @@
         <h3>{{message}}-request</h3>
         <p v-if="message === 'POST'">Request body: {{body}}</p>
         <form method="post">
+            <input type="hidden" name="_csrf" :value="csrfToken">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input id="username" type="text" name="username"/>
