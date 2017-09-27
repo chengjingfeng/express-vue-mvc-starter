@@ -63,6 +63,16 @@ module.exports.init = (app, config) => {
     }));
     app.use(validator());
 
+    app.use(compress());
+
+    app.use(app.locals.rootPath, express.static(config.root));
+    app.use('/', router);
+
+    let controllers = glob.sync(config.root + '/routes/**/*.js');
+    controllers.forEach(function (controller) {
+        module.require(controller).default(router);
+    });
+
     let sessionConfig = {
         secret: 'CHANGE_ME_TOKEN',
         name: 'session',
@@ -103,16 +113,6 @@ module.exports.init = (app, config) => {
             path: '/'
         });
         next();
-    });
-
-    app.use(compress());
-
-    app.use(app.locals.rootPath, express.static(config.root));
-    app.use('/', router);
-
-    let controllers = glob.sync(config.root + '/routes/**/*.js');
-    controllers.forEach(function (controller) {
-        module.require(controller).default(router);
     });
 
     app.use((req, res) => {
