@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "test": "eslint app && TEST='true' nyc ava",
+        "test": "eslint app && NODE_ENV=development nyc ava",
         "lint": "eslint app",
         "build": "npm run clean && npm run sass && npm run copy",
         "copy": "ncp app dist",
