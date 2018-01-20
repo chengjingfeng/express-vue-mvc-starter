@@ -1,8 +1,7 @@
 module.exports.default = (router) => {
     router.get('/post', (req, res) => {
         const data = {
-            title: 'Hello World',
-            message: 'GET',
+            message: 'POST',
             csrfToken: req.csrfToken()
         };
         const vueOptions = {
@@ -10,20 +9,14 @@ module.exports.default = (router) => {
                 title: 'Post example'
             }
         };
-        res.renderVue('post/post', data, vueOptions);
+        res.renderVue('post/post.vue', data, vueOptions);
     });
 
     router.post('/post', (req, res) => {
         const data = {
-            title: 'Hello World',
             message: 'POST',
             body: req.body
         };
-        const vueOptions = {
-            head: {
-                title: 'Post example'
-            }
-        };
-        res.renderVue('post/post', data, vueOptions);
+        res.json(data);
     });
 };

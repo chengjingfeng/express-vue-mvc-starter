@@ -27,7 +27,7 @@ module.exports.init = (app, config) => {
     //Latest non-production version of vue as of writing this doc, 
     //you can go to https://unpkg.com/vue/ to find the latest version
     //check the vuejs.org docs for more info
-    let vueScript = 'https://unpkg.com/vue@2.4.2/dist/vue.js';
+    let vueScript = 'https://unpkg.com/vue@2.5.13/dist/vue.js';
 
     if (process.env.NODE_ENV === 'production') {
         //its production so use the minimised production build of vuejs
@@ -36,14 +36,9 @@ module.exports.init = (app, config) => {
 
     const vueOptions = {
         rootPath: path.join(__dirname, 'routes'),
-        vue: {
-            head: {
-                meta: [{
-                    script: vueScript
-                }, {
-                    style: 'assets/rendered/style.css'
-                }]
-            }
+        head: {
+            scripts: [{ src: vueScript }],
+            styles: [{ style: 'assets/rendered/style.css' }]
         }
     };
     const expressVueMiddleware = expressVue.init(vueOptions);
@@ -126,7 +121,7 @@ module.exports.init = (app, config) => {
             }
         };
         res.statusCode = 404;
-        res.renderVue('error', data, vueOptions);
+        res.renderVue('error.vue', data, vueOptions);
     });
 
     app.use(function onError(error, req, res, next) {
@@ -137,7 +132,7 @@ module.exports.init = (app, config) => {
             error: error.stack
         };
         if (res.statusCode) {
-            res.renderVue('error', data);
+            res.renderVue('error.vue', data);
         } else {
             next();
         }

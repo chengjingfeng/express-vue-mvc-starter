@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Hello World</h1>
+        <h1>{{title}}</h1>
     </div>
 </template>
 
@@ -8,11 +8,8 @@
 export default {
     data: function () {
         return {
+            title: ''
         }
     }
 }
 </script>
-
-<style lang="css">
-
-</style>

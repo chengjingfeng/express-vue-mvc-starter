@@ -3,13 +3,13 @@
 module.exports.default = (router) => {
     router.get('/', (req, res) => {
         const data = {
-            title: 'Hello World'
+            title: 'Oh hi world!'
         };
         const vueOptions = {
             head: {
                 title: 'Express-Vue MVC Starter Kit'
             }
         };
-        res.renderVue('main/main', data, vueOptions);
+        res.renderVue('main/main.vue', data, vueOptions);
     });
 };

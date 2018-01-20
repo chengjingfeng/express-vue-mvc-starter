@@ -1,16 +1,15 @@
 <template>
     <div>
         <h3>{{message}}-request</h3>
-        <p v-if="message === 'POST'">Request body: {{body}}</p>
         <form method="post">
             <input type="hidden" name="_csrf" :value="csrfToken">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" type="text" name="username"/>
+                <input id="username" type="text" name="username" v-model="username" v-bind="username" autocomplete="username"/>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" name="password"/>
+                <input id="password" type="password" name="password" v-model="password" v-bind="password" autocomplete="current-password"/>
             </div>
             <input type="submit"/>
         </form>
@@ -19,13 +18,16 @@
 
 <script>
     export default {
-        data: function () {
-            return {}
+        data: function() {
+            return {
+                message: '',
+                csrfToken: ''
+            }
         }
     }
 </script>
 
-<style lang="css">
+<style>
     div.form-group {
         padding: 5px;
     }
