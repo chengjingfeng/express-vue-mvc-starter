@@ -1,31 +1,53 @@
 <template>
     <div>
         <h3>{{message}}-request</h3>
-        <p v-if="message === 'POST'">Request body: {{body}}</p>
-        <form method="post">
+        <form v-on:submit.prevent="sendData">
             <input type="hidden" name="_csrf" :value="csrfToken">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" type="text" name="username"/>
+                <input id="username" type="text" name="username" v-model="username" autocomplete="username"/>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" name="password"/>
+                <input id="password" type="password" name="password" v-model="password" autocomplete="current-password"/>
             </div>
             <input type="submit"/>
         </form>
+        <h3>Result:</h3>
+        <pre>{{result}}</pre>
     </div>
 </template>
 
 <script>
     export default {
-        data: function () {
-            return {}
+        data: function() {
+            return {
+                message: "",
+                csrfToken: "",
+                result: {},
+                error: ""
+            }
+        },
+        methods: {
+            sendData: function() {
+                const data = {
+                    username: this.username,
+                    password: this.password,
+                    _csrf: this.csrfToken
+                }
+                axios.post("/post", data)
+                    .then(result => {
+                        this.result = result.data;
+                    })
+                    .catch(error => {
+                        this.error = error.data;
+                    })
+            }
         }
     }
 </script>
 
-<style lang="css">
+<style>
     div.form-group {
         padding: 5px;
     }

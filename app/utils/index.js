@@ -1,2 +1,2 @@
 // 
-module.exports.paramObject = require('./paramUtil');
+module.exports.paramObject = require("./paramUtil");

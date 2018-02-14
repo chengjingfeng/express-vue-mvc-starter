@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1>Hello World</h1>
+        <h1>{{title}}</h1>
+        <a href="/post">Click here for an example of a Post</a>
     </div>
 </template>
 
@@ -8,11 +9,8 @@
 export default {
     data: function () {
         return {
+            title: ''
         }
     }
 }
 </script>
-
-<style lang="css">
-
-</style>

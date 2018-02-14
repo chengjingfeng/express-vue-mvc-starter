@@ -1,2 +1,2 @@
 // 
-module.exports.csrfMixin = require('./csrfMixin').default;
+module.exports.csrfMixin = require("./csrfMixin").default;
