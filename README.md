@@ -11,9 +11,12 @@ Documentation is at [express-vue/express-vue](https://github.com/express-vue/exp
 
 Copy this repo, change the package.json, and go through the router.js file and change the settings for your cookie session storage.
 
+To Run
+
+1. `npm install`
+2. `npm start`
 
 **Building and Running in prod**
 
-1. `npm run build`
-2. `ENV=production npm dist`
+1. `ENV=production node app`
 
