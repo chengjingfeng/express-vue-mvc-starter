@@ -17,7 +17,7 @@ const paths = {
     dest: './dist',
     es6: ['./app/**/*.js', '!./app/assets/**/*.js'],
     scss: './app/**/*.scss',
-    css: './dist/assets/rendered',
+    css: './app/assets/rendered',
     assets: ['./app/assets/**/*', '!./app/assets/scss/**/*'],
     vue: ['./app/**/*.vue'],
     tests: 'test/**/*.js',
@@ -25,11 +25,7 @@ const paths = {
     sourceRoot: path.join(__dirname, 'src')
 };
 
-gulp.task('clean', function () {
-    return del(['dist']);
-});
-
-gulp.task('sass', ['clean'], function () {
+gulp.task('sass', function () {
     return gulp.src(paths.scss)
         .pipe(sourceMaps.init())
         .pipe(sass({
@@ -41,28 +37,12 @@ gulp.task('sass', ['clean'], function () {
         .pipe(livereload());
 });
 
-gulp.task('vue', ['sass'], () => {
-    return gulp.src(paths.vue)
-        .pipe(gulp.dest(paths.dest))
-        .pipe(livereload());
-});
-
-gulp.task('babel', ['vue'], () => {
-    const stream = gulp.src(paths.es6)
-        .pipe(sourceMaps.init())
-        .pipe(babel())
-        .pipe(sourceMaps.write())
-        .pipe(gulp.dest(paths.dest))
-        .pipe(livereload());
-    return stream;
-});
-
-gulp.task('watch', ['babel'], function () {
+gulp.task('watch', ['sass'], function () {
     livereload.listen({
         port: 35732
     });
     nodemon({
-        script: 'dist/',
+        script: 'app/',
         stdout: true,
         watch: 'app',
         ext: 'js scss vue',
@@ -74,24 +54,6 @@ gulp.task('watch', ['babel'], function () {
         }, 1500);
     });
 });
-
-gulp.task('eslint', function () {
-    return gulp.src(paths.es6)
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-})
-
-gulp.task('test', ['eslint'], function () {
-    return gulp.src(paths.tests)
-        .pipe(ava({
-            nyc: true
-        }))
-})
-
-gulp.task('build', [
-    'babel'
-]);
 
 gulp.task('default', [
     'watch'

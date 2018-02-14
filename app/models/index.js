@@ -1,2 +1,2 @@
 // 
-module.exports.Config = require('./config');
+module.exports.Config = require("./config");

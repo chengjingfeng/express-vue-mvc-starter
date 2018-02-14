@@ -1,13 +1,13 @@
 // 
 function paramObject(object) {
-    let str = '';
+    let str = "";
     for (let key in object) {
-        if (str != '') {
-            str += '&';
+        if (str != "") {
+            str += "&";
         }
-        str += key + '=' + encodeURIComponent(object[key]);
+        str += key + "=" + encodeURIComponent(object[key]);
     }
-    return '?' + str;
+    return "?" + str;
 }
 
 module.exports = paramObject;

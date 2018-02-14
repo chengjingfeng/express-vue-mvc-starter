@@ -1,20 +1,23 @@
 module.exports.default = (router) => {
-    router.get('/post', (req, res) => {
+    router.get("/post", (req, res) => {
         const data = {
-            message: 'POST',
+            message: "POST",
             csrfToken: req.csrfToken()
         };
-        const vueOptions = {
+        req.vueOptions = {
             head: {
-                title: 'Post example'
+                title: "Post example",
+                scripts: [
+                    {src: "https://unpkg.com/axios/dist/axios.min.js"}
+                ]
             }
         };
-        res.renderVue('post/post.vue', data, vueOptions);
+        res.renderVue("post/post.vue", data, req.vueOptions);
     });
 
-    router.post('/post', (req, res) => {
+    router.post("/post", (req, res) => {
         const data = {
-            message: 'POST',
+            message: "POST",
             body: req.body
         };
         res.json(data);
