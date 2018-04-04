@@ -52,7 +52,7 @@
         "express": "^4.16.3",
         "express-session": "^1.15.6",
         "express-validator": "^4.3.0",
-        "express-vue": "^5.6.1",
+        "express-vue": "^5.6.2",
         "glob": "^7.1.1",
         "global": "^4.3.1",
         "gulp-ava": "^0.18.0",
