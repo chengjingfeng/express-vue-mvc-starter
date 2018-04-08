@@ -1,2 +1,3 @@
 //@ts-check
-module.exports.Config = require("./config");
+module.exports.Config = require("./config.model");
+module.exports.TodoModel = require("./todo.model");

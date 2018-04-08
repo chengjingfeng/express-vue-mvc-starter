@@ -1,7 +1,8 @@
 <template>
     <div>
         <h1>{{title}}</h1>
-        <a href="/post">Click here for an example of a Post</a>
+        <p><a href="/post">Click here for an example of a Post</a></p>
+        <p><a href="/todo">TodoMVC</a></p>
     </div>
 </template>
 
