@@ -1,4 +1,4 @@
-// 
+//@ts-check
 const express = require("express");
 const glob = require("glob");
 const logger = require("morgan");
@@ -8,12 +8,16 @@ const compress = require("compression");
 const methodOverride = require("method-override");
 const cookieSession = require("cookie-session");
 const helmet = require("helmet");
-const csrf = require("csurf");
 const validator = require("express-validator");
 const expressVue = require("express-vue");
 const API = require("./api");
 const path = require("path");
 
+/**
+ *
+ * @param {object} app
+ * @param {object} config
+ */
 module.exports.init = (app, config) => {
     //Setup
     const env = process.env.NODE_ENV || "development";
@@ -26,11 +30,11 @@ module.exports.init = (app, config) => {
     //ExpressVue Setup
     const vueOptions = {
         rootPath: path.join(__dirname, "routes"),
-        vueVersion: "2.5.13",
         head: {
-            styles: [{ style: "assets/rendered/style.css" }]
-        }
+            styles: [{ style: "assets/rendered/style.css" }],
+        },
     };
+
     const expressVueMiddleware = expressVue.init(vueOptions);
     app.use(expressVueMiddleware);
 
@@ -44,7 +48,7 @@ module.exports.init = (app, config) => {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
-        extended: true
+        extended: true,
     }));
     app.use(validator());
 
@@ -55,17 +59,17 @@ module.exports.init = (app, config) => {
     let sessionConfig = {
         secret: "CHANGE_ME_TOKEN",
         name: "session",
-        keys: [
-            "CHANGE_ME",
-            "ME_TOO_PLEASE"
-        ],
+        // keys: [
+        //     "CHANGE_ME",
+        //     "ME_TOO_PLEASE"
+        // ],
         resave: true,
         saveUninitialized: true,
         cookie: {
             domain: "foo.bar.com",
             secure: false,
             httpOnly: true,
-        }
+        },
     };
     if (env === "production") {
         app.set("trust proxy", 1);
@@ -83,49 +87,52 @@ module.exports.init = (app, config) => {
 
     app.use(cookieSession(sessionConfig));
 
-    app.use(csrf({
-        cookie: true
-    }));
-
-    app.use(function (req, res, next) {
-        res.cookie("token", req.csrfToken(), {
-            path: "/"
-        });
-        next();
-    });
-
     app.use("/", router);
 
     let controllers = glob.sync(config.root + "/routes/**/*.js");
-    controllers.forEach(function (controller) {
-        module.require(controller).default(router);
+    controllers.forEach(function(controller) {
+        module.require(controller)(router);
     });
 
-    app.use((req, res) => {
+    /**
+     * Generic 404 handler
+     * @param {object} req
+     * @param {object} res
+     */
+    function error404handler(req, res) {
         const data = {
-            title: "Error 404"
+            title: "Error 404",
         };
-        const vueOptions = {
+        req.vueOptions = {
             head: {
-                title: "Error 404"
-            }
+                title: "Error 404",
+            },
         };
         res.statusCode = 404;
-        res.renderVue("error.vue", data, vueOptions);
-    });
+        res.renderVue("error.vue", data, req.vueOptions);
+    }
+    app.use(error404handler);
 
-    app.use(function onError(error, req, res, next) {
+    /**
+     * Generic Error handling route
+     * @param {object} error
+     * @param {object} req
+     * @param {object} res
+     * @param {Function} next
+     */
+    function genericErrorHandler(error, req, res, next) {
         res.statusCode = 500;
         let data = {
             debug: env === "development",
             errorCode: error.code,
-            error: error.stack
+            error: error.stack,
         };
         if (res.statusCode) {
             res.renderVue("error.vue", data);
         } else {
             next();
         }
-    });
+    }
+    app.use(genericErrorHandler);
 
 };
