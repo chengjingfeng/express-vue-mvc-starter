@@ -1,5 +1,5 @@
 // @ts-check
-const {Todo} = require("../models");
+const {TodoModel} = require("../models");
 /**
  * Generates Todo's if empty
  * @param {object} req
@@ -16,7 +16,7 @@ function generateTodosMiddleware(req, res, next) {
         ];
         req.session.todos = [];
         todos.forEach((element, key) => {
-            let todo = new Todo({
+            let todo = new TodoModel({
                 id: key,
                 title: element,
                 completed: false,
