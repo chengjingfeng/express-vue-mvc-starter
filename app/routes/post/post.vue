@@ -2,7 +2,6 @@
     <div>
         <h3>{{message}}-request</h3>
         <form v-on:submit.prevent="sendData">
-            <input type="hidden" name="_csrf" :value="csrfToken">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input id="username" type="text" name="username" v-model="username" autocomplete="username"/>
@@ -23,7 +22,6 @@
         data: function() {
             return {
                 message: "",
-                csrfToken: "",
                 result: {},
                 error: ""
             }
@@ -33,7 +31,6 @@
                 const data = {
                     username: this.username,
                     password: this.password,
-                    _csrf: this.csrfToken
                 }
                 axios.post("/post", data)
                     .then(result => {

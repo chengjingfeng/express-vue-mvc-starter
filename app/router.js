@@ -10,7 +10,6 @@ const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const validator = require("express-validator");
 const expressVue = require("express-vue");
-const API = require("./api");
 const path = require("path");
 
 /**
@@ -41,10 +40,6 @@ module.exports.init = (app, config) => {
     //Security
     app.use(helmet());
     app.disable("x-powered-by");
-
-    //Api
-    const api = API.init();
-    app.use("/api", api);
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
