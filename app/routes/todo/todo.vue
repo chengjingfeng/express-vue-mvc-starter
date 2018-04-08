@@ -9,7 +9,7 @@
                 v-model="newTodo"
                 @keyup.enter="addTodo">
             </header>
-            <section class="main" v-show="todos.length" v-cloak>
+            <section class="main" v-show="todos.length">
                 <input class="toggle-all" type="checkbox" v-model="allDone">
                 <ul class="todo-list">
                     <li v-for="todo in todos"
@@ -30,7 +30,7 @@
                     </li>
                 </ul>
             </section>
-            <footer class="footer" v-show="todos.length" v-cloak>
+            <footer class="footer" v-show="showFooter">
                 <span class="todo-count">
                     <strong>{{ remaining }}</strong> {{ remaining | pluralize }} left
                 </span>
@@ -44,6 +44,7 @@
                 </button>
             </footer>
         </section>
+        <button @click="shareTodos()">Share</button>
     </div>
 </template>
 
@@ -115,7 +116,12 @@ export default {
                 return !todo.completed;
             })
         },
-        
+        shareTodos: function() {
+            axios.post("/todo/share", this.todos)
+                .then(function(response) {
+                    window.location = response.data.link;
+                });
+        }
     },
     directives: {
         'todo-focus': function (el, binding) {
@@ -127,6 +133,7 @@ export default {
     watch: {
         todos: {
             handler: function(todos) {
+                this.showFooter = todos.length > 0;
                 axios.post(`/todo/update`, todos);
             },
             deep: true

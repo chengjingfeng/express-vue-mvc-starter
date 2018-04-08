@@ -1,6 +1,7 @@
 //@ts-check
 const {generateTodos} = require("../../middleware");
-const {Todo} = require("../../models");
+const {TodoModel} = require("../../models");
+const {todoUtils} = require("../../utils");
 
 /**
  * Main Route Contoller
@@ -17,6 +18,7 @@ module.exports = (router) => {
             const data = {
                 title: "Todos",
                 todos: req.session.todos,
+                showFooter: req.session.todos.length > 0,
             };
             req.vueOptions.head.title = "Todo";
             req.vueOptions.head.styles.push({
@@ -30,21 +32,27 @@ module.exports = (router) => {
                 switch (req.query.filter.toUpperCase()) {
                     case "COMPLETED":
                         data.todos = data.todos.filter(
-                            /** @param {Todo} todo */
+                            /** @param {TodoModel} todo */
                             function(todo) {
                                 return todo.completed;
                             },
                         );
+                        data.showFooter = true;
                         break;
                     case "ACTIVE":
                         data.todos = data.todos.filter(
-                            /** @param {Todo} todo */
+                            /** @param {TodoModel} todo */
                             function(todo) {
                                 return !todo.completed;
                             },
                         );
+                        data.showFooter = true;
                         break;
                 }
+            }
+            if (req.query.share) {
+                data.todos = todoUtils.decrypt(req.query.share);
+                data.showFooter = true;
             }
 
             res.renderVue("todo/todo.vue", data, req.vueOptions);
@@ -59,6 +67,17 @@ module.exports = (router) => {
         (req, res) => {
             req.session.todos = req.body;
             res.json({ok: true});
+        },
+    );
+
+    router.post("/todo/share",
+        /**
+         * @param {object} req
+         * @param {object} res
+         */
+        (req, res) => {
+            const encryptedString = todoUtils.encrypt(req.body);
+            res.json({link: `/todo?share=${encryptedString}`});
         },
     );
 };
