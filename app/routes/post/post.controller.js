@@ -14,14 +14,10 @@ module.exports = (router) => {
             const data = {
                 message: "POST",
             };
-            req.vueOptions = {
-                head: {
-                    title: "Post example",
-                    scripts: [
-                        { src: "https://unpkg.com/axios/dist/axios.min.js" },
-                    ],
-                },
-            };
+            req.vueOptions.head.title = "Post Example";
+            req.vueOptions.head.scripts.push({
+                src: "https://unpkg.com/axios/dist/axios.min.js",
+            });
             res.renderVue("post/post.vue", data, req.vueOptions);
         },
     );

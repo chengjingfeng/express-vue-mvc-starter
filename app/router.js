@@ -34,6 +34,7 @@ module.exports.init = (app, config) => {
         },
     };
 
+    // @ts-ignore
     const expressVueMiddleware = expressVue.init(vueOptions);
     app.use(expressVueMiddleware);
 
@@ -52,12 +53,10 @@ module.exports.init = (app, config) => {
     app.use(app.locals.rootPath, express.static(config.root));
 
     let sessionConfig = {
-        secret: "CHANGE_ME_TOKEN",
         name: "session",
-        // keys: [
-        //     "CHANGE_ME",
-        //     "ME_TOO_PLEASE"
-        // ],
+        keys: [
+            "CHANGE_ME",
+        ],
         resave: true,
         saveUninitialized: true,
         cookie: {
