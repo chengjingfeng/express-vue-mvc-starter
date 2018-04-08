@@ -13,7 +13,6 @@ module.exports = (router) => {
         (req, res) => {
             const data = {
                 message: "POST",
-                csrfToken: req.csrfToken(),
             };
             req.vueOptions = {
                 head: {
