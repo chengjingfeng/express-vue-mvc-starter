@@ -1,3 +1,0 @@
-[ignore]
-.*/node_modules/vue/src/*.
-.*/node_modules/ambi/node_modules/*.

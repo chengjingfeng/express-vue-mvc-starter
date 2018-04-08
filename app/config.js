@@ -1,4 +1,4 @@
-// 
+//@ts-check
 const dotenv = require("dotenv");
 const Models = require("./models");
 
@@ -10,7 +10,7 @@ if (process.env.ENV !== undefined) {
 }
 
 dotenv.config({
-    path: "environment/" + envFile
+    path: "environment/" + envFile,
 });
 
 const config = new Models.Config();

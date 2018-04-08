@@ -1,4 +1,4 @@
-// 
+//@ts-check
 const path = require("path");
 
 class Config {
@@ -7,9 +7,9 @@ class Config {
         this.root = path.normalize(__dirname + "/..");
         this.rootPath = process.env.ROOT_PATH || "/";
         this.app = {
-            name: "Express-Vue-MVC-Starter"
+            name: "Express-Vue-MVC-Starter",
         };
-        this.port = parseInt(process.env.PORT) || 9000;
+        this.port = Number(process.env.PORT) || 9000;
     }
 }
 module.exports = Config;

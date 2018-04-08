@@ -1,2 +1,1 @@
-// 
-module.exports.csrfMixin = require("./csrfMixin").default;
+//@ts-check
