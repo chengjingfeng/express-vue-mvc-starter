@@ -98,7 +98,7 @@
         "gulp-sourcemaps": "^2.6.4",
         "isparta": "^4.0.0",
         "ncp": "^2.0.0",
-        "nyc": "^11.6.0",
+        "nyc": "^13.3.0",
         "request": "^2.85.0",
         "rimraf": "^2.6.2",
         "time-grunt": "^1.2.1",
