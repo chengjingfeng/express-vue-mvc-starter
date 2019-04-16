@@ -40,7 +40,7 @@
     "dependencies": {
         "@types/uuid": "^3.4.3",
         "babel-cli": "^6.26.0",
-        "babel-plugin-istanbul": "^4.1.6",
+        "babel-plugin-istanbul": "^5.1.2",
         "babel-register": "^6.26.0",
         "body-parser": "^1.18.2",
         "compression": "^1.7.2",
